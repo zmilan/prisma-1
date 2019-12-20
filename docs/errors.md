@@ -308,7 +308,7 @@ To fix this, be sure that the requested record actually exists in the database.
 
 ---
 
-### P2002
+### P2002 Unique constraint violation
 
 This error occurs when you're trying to set a value of a _unique_ field to a value that already exists for that column in the database. For example, if you have the following data model:
 
@@ -330,3 +330,105 @@ Unique constraint failed on the field: `${field_name}`
 #### How to fix
 
 To fix this, you can either change the value for the unique field that you tried to set or change the existing value that would have been duplicated.
+
+### P2003 Foreign key constraint violation
+
+This error occurs when you're violating the rules for setting a foreign key. This can happen for example when you're trying to set a relation on a model pointing to a record that doesn't exist. 
+
+#### Error message
+
+```
+Foreign key constraint failed on the field: `${field_name}`
+```
+
+#### How to fix
+
+To fix this, you need to ensure that the record you want to connect via the relation actually exists.
+
+### P2004 Database constraint violation
+
+This error occurs when a constraint is violated on the specified database.
+
+#### Error message
+
+```
+A constraint failed on the database: `${database_error}`
+```
+
+#### How to fix
+
+To fix this, you need to ensure that the database operation does't violate the constraint.
+
+
+### P2005 Type mismatch
+
+This error occurs when there's a type mismatch between a value for a certain field of a Prisma model and the specified type of the respective column in the database.
+
+#### Error message
+
+```
+The value `${field_value}` stored in the database for the field `${field_name}` is invalid for the field's type
+```
+
+#### How to fix
+
+To fix this, you must ensure that that types stored in the database match the types in the Prisma model. You can do this by always keeping your Prisma schema in sync with your database schema (e.g. by using Prisma's migration or introspection).
+
+
+### P2006 Invalid value
+
+This error occurs when you're providing an invalid value for a specific field of a Prisma model.
+
+#### Error message
+
+```
+The provided value `${field_value}` for `${model_name}` field `${field_name}` is not valid
+```
+
+#### How to fix
+
+To fix this, you must make sure that the value you want to store is valid on a database-level.
+
+### P2007 Database validation error
+
+This error occurs when the database throws a validation error.
+
+#### Error message
+
+```
+Data validation error `${database_error}`
+```
+
+#### How to fix
+
+To fix this, you must ensure that your database operation is valid.
+
+### P20
+
+This error occurs when 
+
+#### Error message
+
+```
+
+```
+
+#### How to fix
+
+To fix this, you can 
+
+---
+
+### P20
+
+This error occurs when 
+
+#### Error message
+
+```
+
+```
+
+#### How to fix
+
+To fix this, you can 
