@@ -93,10 +93,7 @@ export function uriToCredentials(
     user: exists(uri.username) ? uri.username : undefined,
     port: exists(uri.port) ? Number(uri.port) : undefined,
     password: exists(uri.password) ? uri.password : undefined,
-    database:
-      uri.pathname && uri.pathname.length > 1
-        ? uri.pathname.slice(1)
-        : undefined,
+    database: uri.pathname && uri.pathname.length > 1 ? uri.pathname : undefined,
     schema: uri.query.schema || undefined,
     uri: connectionString,
     ssl: Boolean(uri.query.sslmode),
