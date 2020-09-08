@@ -59,6 +59,7 @@ importers:
       '@zeit/ncc': 0.22.3
       checkpoint-client: 1.1.11
       dotenv: 8.2.0
+      dotenv-expand: 5.1.0
       eslint: 7.8.1
       eslint-config-prettier: 6.11.0_eslint@7.8.1
       eslint-plugin-eslint-comments: 3.2.0_eslint@7.8.1
@@ -117,6 +118,7 @@ importers:
       '@zeit/ncc': 0.22.3
       checkpoint-client: 1.1.11
       dotenv: 8.2.0
+      dotenv-expand: 5.1.0
       eslint: 7.8.1
       eslint-config-prettier: 6.11.0
       eslint-plugin-eslint-comments: 3.2.0
@@ -179,6 +181,7 @@ importers:
       chalk: 4.1.0
       del: 5.1.0
       dotenv: 8.2.0
+      dotenv-expand: 5.1.0
       eslint: 7.8.1
       eslint-config-prettier: 6.11.0_eslint@7.8.1
       eslint-plugin-eslint-comments: 3.2.0_eslint@7.8.1
@@ -242,6 +245,7 @@ importers:
       chalk: 4.1.0
       del: 5.1.0
       dotenv: 8.2.0
+      dotenv-expand: 5.1.0
       eslint: 7.8.1
       eslint-config-prettier: 6.11.0
       eslint-plugin-eslint-comments: 3.2.0
@@ -1828,14 +1832,12 @@ packages:
     resolution:
       integrity: sha512-lXXAa8c8ASoA61Tj9H5E5V2mRUTvNZ/dpJ5KxghI+O5geWMHt73NLZ9kEBBDK7zUUfMsMY3ZH4Sqeqh3SjSyfg==
   /@types/prop-types/15.7.3:
-    dev: true
     resolution:
       integrity: sha512-KfRL3PuHmqQLOG+2tGpRO26Ctg+Cq1E01D2DMriKEATHgWLfeNDmq9e29Q9WIky0dQ3NPkd1mzYH8Lm936Z9qw==
   /@types/react/16.9.11:
     dependencies:
       '@types/prop-types': 15.7.3
       csstype: 2.6.10
-    dev: true
     resolution:
       integrity: sha512-UBT4GZ3PokTXSWmdgC/GeCGEJXE5ofWyibCcecRLUVN2ZBpXQGVgQGtG2foS7CrTKFKlQVVswLvf7Js6XA/CVQ==
   /@types/redis/2.8.27:
@@ -3005,7 +3007,6 @@ packages:
     resolution:
       integrity: sha512-AZL67abkUzIuvcHqk7c09cezpGNcxUxU4Ioi/05xHk4DQeTkWmGYftIE6ctU6AEt+Gn4n1lDStOtj7FKycP71A==
   /csstype/2.6.10:
-    dev: true
     resolution:
       integrity: sha512-D34BqZU4cIlMCY93rZHbrq9pjTAQJ3U8S8rfBqjwHxkGPThWFjzZDQpgMJY0QViLxth6ZKYiwFBo14RdN44U/w==
   /dashdash/1.14.1:
@@ -3248,6 +3249,10 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-yxJ2mFy/sibVQlu5qHjOkf9J3K6zgmCxgJ94u2EdvDOV09H+32LtRswEcUsmUWN72pVLOEnTSRaIVVzVQgS0dg==
+  /dotenv-expand/5.1.0:
+    dev: true
+    resolution:
+      integrity: sha512-YXQl1DSa4/PQyRfgrv6aoNjhasp/p4qs9FjJ4q4cQk+8m4r6k4ZSiEyytKG8f8W9gi8WsQtIObNmKd+tMzNTmA==
   /dotenv/8.2.0:
     dev: true
     engines:
@@ -7159,7 +7164,6 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
       prop-types: 15.7.2
-    dev: true
     engines:
       node: '>=0.10.0'
     resolution:

@@ -385,7 +385,7 @@ export function getPrismaClient(config: GetPrismaClientOptions): any {
         '.env',
       )
       if (fs.existsSync(dotEnvPath)) {
-        return dotenvExpand(parseDotEnv(fs.readFileSync(dotEnvPath, 'utf-8')))
+        return dotenvExpand(dotenv.config({ path: dotEnvPath })).parsed
       }
 
       return {}
