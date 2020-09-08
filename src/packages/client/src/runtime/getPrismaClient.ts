@@ -24,7 +24,7 @@ const debug = Debug('prisma-client')
 import fs from 'fs'
 import chalk from 'chalk'
 import * as sqlTemplateTag from 'sql-template-tag'
-import { parse as parseDotEnv } from 'dotenv'
+import dotenv from 'dotenv'
 import dotenvExpand from 'dotenv-expand'
 import {
   GeneratorConfig,
