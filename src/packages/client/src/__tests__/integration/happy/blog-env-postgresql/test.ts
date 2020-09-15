@@ -1,6 +1,10 @@
 import { uriToCredentials, credentialsToUri, createDatabase } from '@prisma/sdk'
-import { Client } from 'pg'
 import { generateTestClient } from '../../../../utils/getTestClient'
+import {
+  SetupParams,
+  setupPostgres,
+  tearDownPostgres,
+} from '../../../../utils/setupPostgres'
 
 test('blog-env-postgresql', async () => {
   await generateTestClient()
@@ -12,10 +16,16 @@ test('blog-env-postgresql', async () => {
   } = require('@prisma/client')
 
   let originalConnectionString =
-    (process.env.TEST_POSTGRES_URI || 'postgres://localhost:5432/prisma-dev')
+    process.env.TEST_POSTGRES_URI || 'postgres://localhost:5432/prisma-dev'
 
   originalConnectionString += '-blog-env-postgresql'
-  await createDatabase(originalConnectionString).catch(e => console.error(e))
+
+  const SetupParams: SetupParams = {
+    connectionString: originalConnectionString,
+    dirname: __dirname,
+  }
+
+  await setupPostgres(SetupParams).catch((e) => console.error(e))
 
   const credentials = uriToCredentials(originalConnectionString)
   const sourcePort = credentials.port || 5432
@@ -25,44 +35,6 @@ test('blog-env-postgresql', async () => {
     host: 'localhost',
     port: sourcePort,
   })
-
-  const db = new Client({
-    connectionString: originalConnectionString,
-  })
-  await db.connect()
-  await db.query(`
-    DROP TYPE IF EXISTS "Role";
-    CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN');
-
-    DROP TABLE IF EXISTS "public"."Post" CASCADE;
-    CREATE TABLE "public"."Post" (
-        "id" text NOT NULL,
-        "createdAt" timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        "updatedAt" timestamp(3) NOT NULL DEFAULT '1970-01-01 00:00:00'::timestamp without time zone,
-        "published" boolean NOT NULL DEFAULT false,
-        "title" text NOT NULL,
-        "content" text,
-        "authorId" text,
-        "jsonData" jsonb,
-        "coinflips" _bool,
-        PRIMARY KEY ("id")
-    );
-
-    DROP TABLE IF EXISTS "public"."User" CASCADE;
-    CREATE TABLE "public"."User" (
-        "id" text,
-        "email" text NOT NULL,
-        "name" text,
-        PRIMARY KEY ("id")
-    );
-
-    CREATE UNIQUE INDEX "User.email" ON "public"."User"("email");
-
-    ALTER TABLE "public"."Post" ADD FOREIGN KEY ("authorId") REFERENCES "public"."User"("id")
-    ON DELETE SET NULL ON UPDATE CASCADE;
-
-    INSERT INTO "public"."User" (email, id, name) VALUES ('a@a.de',	'576eddf9-2434-421f-9a86-58bede16fd95',	'Alice');
-  `)
 
   const requests: any[] = []
   const errorLogs: any[] = []
@@ -140,7 +112,7 @@ test('blog-env-postgresql', async () => {
   expect(errorLogs.length).toBe(1)
   try {
     const users = await prisma.user.findMany()
-  } catch (e) { }
+  } catch (e) {}
   const users = await prisma.user.findMany()
   expect(users.length).toBe(1)
   const resultEmptyJson = await prisma.post.create({
@@ -289,9 +261,7 @@ test('blog-env-postgresql', async () => {
   })
 
   prisma.$disconnect()
-  await db.query(`
-    DROP TABLE IF EXISTS "public"."Post" CASCADE;
-    DROP TABLE IF EXISTS "public"."User" CASCADE;
-  `)
-  await db.end()
+  await tearDownPostgres(SetupParams).catch((e) => {
+    console.log(e)
+  })
 })
