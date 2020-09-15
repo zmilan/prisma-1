@@ -1,4 +1,4 @@
-import { uriToCredentials, credentialsToUri, createDatabase } from '@prisma/sdk'
+import { uriToCredentials, credentialsToUri } from '@prisma/sdk'
 import { generateTestClient } from '../../../../utils/getTestClient'
 import {
   SetupParams,

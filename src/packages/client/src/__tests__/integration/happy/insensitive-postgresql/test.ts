@@ -1,6 +1,4 @@
-const { Client } = require('pg')
 import { getTestClient } from '../../../../utils/getTestClient'
-import { createDatabase } from '@prisma/sdk'
 import {
   SetupParams,
   setupPostgres,
