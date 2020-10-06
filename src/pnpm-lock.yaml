@@ -53,7 +53,7 @@ importers:
       '@prisma/introspection': 'link:../introspection'
       '@prisma/migrate': 'link:../migrate'
       '@prisma/sdk': 'link:../sdk'
-      '@prisma/studio': 0.294.0
+      '@prisma/studio': 0.296.0
       '@prisma/studio-server': 0.296.0
       '@types/debug': 4.1.5
       '@types/jest': 26.0.14
@@ -112,7 +112,7 @@ importers:
       '@prisma/introspection': 'workspace:*'
       '@prisma/migrate': 'workspace:*'
       '@prisma/sdk': 'workspace:*'
-      '@prisma/studio': 0.294.0
+      '@prisma/studio': 0.296.0
       '@prisma/studio-server': 0.296.0
       '@prisma/studio-types': 0.296.0
       '@types/debug': 4.1.5
@@ -1550,10 +1550,6 @@ packages:
   /@prisma/studio-types/0.296.0:
     resolution:
       integrity: sha512-b7RQTivad3wgzWfPBBzHvnkwrDwKw8zTfrqfIT/DXYZD36I8u1RKC4PzIbaM9NNKi0GXQYbZC/komWJ6YQUcgA==
-  /@prisma/studio/0.294.0:
-    dev: true
-    resolution:
-      integrity: sha512-4ZtkKCiXHO8ZLDwmZWESShYFPMFZAKQLJClyYjqt40z0BLHe1MxuUt+NheRf61d9ZZkwdHLeN51GhlEIrLo13Q==
   /@prisma/studio/0.296.0:
     resolution:
       integrity: sha512-EtQbPbC+QkOI+bje51jsLTBFUg9iFl6pXgEhAKss9uy+xWP15p5Ph+al/8zWyp7rGRoKJQ9sD1ivXtLusSQpgQ==
