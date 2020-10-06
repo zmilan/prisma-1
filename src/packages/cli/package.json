@@ -157,8 +157,5 @@
     "*.{js,ts}": [
       "eslint"
     ]
-  },
-  "dependencies": {
-    "@prisma/studio-types": "0.296.0"
   }
 }

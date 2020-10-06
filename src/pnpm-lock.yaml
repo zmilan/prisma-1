@@ -41,8 +41,6 @@ importers:
       ts-node: 9.0.0
       typescript: 4.0.3
   packages/cli:
-    dependencies:
-      '@prisma/studio-types': 0.296.0
     devDependencies:
       '@apexearth/copy': 1.4.5
       '@prisma/client': 'link:../client'
@@ -114,7 +112,6 @@ importers:
       '@prisma/sdk': 'workspace:*'
       '@prisma/studio': 0.296.0
       '@prisma/studio-server': 0.296.0
-      '@prisma/studio-types': 0.296.0
       '@types/debug': 4.1.5
       '@types/jest': 26.0.14
       '@types/pg': 7.14.5
