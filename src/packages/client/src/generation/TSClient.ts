@@ -1190,7 +1190,7 @@ ${indent(
           ([actionName]: [any, any]): string =>
             `${getMethodJSDoc(actionName, mapping, model)}
 ${actionName}<T extends ${getModelArgName(name, actionName)}>(
-  args${actionName === DMMF.ModelAction.findMany ? '?' : ''
+  args${(actionName === DMMF.ModelAction.findMany || actionName === DMMF.ModelAction.findFirst) ? '?' : ''
             }: Subset<T, ${getModelArgName(name, actionName)}>
 ): ${getSelectReturnType({ name, actionName, projection: Projection.select })}`,
         )
