@@ -620,9 +620,14 @@ async function publish() {
       prisma2Version = await getNewIntegrationVersion(packages, branch)
       tag = 'integration'
     } else if (patchBranch) {
+      if (args['--release']) {
+        tag = 'latest'
+        prisma2Version = args['--release']
+      } else {
+        prisma2Version = await getNewPatchDevVersion(packages, patchBranch)
+        tag = 'patch-dev'
+      }
       // TODO Check if PATCH_BRANCH work!
-      prisma2Version = await getNewPatchDevVersion(packages, patchBranch)
-      tag = 'patch-dev'
     } else if (args['--release']) {
       prisma2Version = args['--release']
       tag = 'latest'
@@ -868,7 +873,10 @@ async function publishPackages(
       ? 'Releasing '
       : 'Publishing '
 
+
+
   if (releaseVersion) {
+    prisma2Version = releaseVersion
     console.log(
       chalk.red.bold(
         `RELEASE. This will release ${chalk.underline(
