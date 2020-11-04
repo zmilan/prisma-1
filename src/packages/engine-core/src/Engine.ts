@@ -1,12 +1,13 @@
+import { getLogs } from '@prisma/debug'
+import stripAnsi from 'strip-ansi'
 import {
-  RustLog,
+  isRustError,
   //  PanicLogFields,
   RustError,
-  isRustError,
+  RustLog,
 } from './log'
-import { getLogs } from '@prisma/debug'
+import { NodeEngine } from './NodeEngine'
 import { getGithubIssueUrl, link } from './util'
-import stripAnsi from 'strip-ansi'
 
 export function getMessage(log: string | RustLog | RustError | any): string {
   if (typeof log === 'string') {
@@ -83,42 +84,104 @@ export class PrismaClientInitializationError extends Error {
 }
 
 export interface ErrorWithLinkInput {
-  version: string
-  platform: string
   title: string
   description?: string
 }
+interface IssueTemplateOptions {
+  os: string
+  database: string
+  nodeVersion: string
+  clientVersion: string
+  engineVersion: string
 
-export function getErrorMessageWithLink({
-  version,
-  platform,
-  title,
-  description,
-}: ErrorWithLinkInput) {
-  const logs = normalizeLogs(stripAnsi(getLogs()))
-  const moreInfo = description
-    ? `# Description\n\`\`\`\n${description}\n\`\`\``
-    : ''
-  const body = stripAnsi(
-    `Hi Prisma Team! My Prisma Client just crashed. This is the report:
-## Versions
+  logs: string
+}
+function clientBugIssueTemplate({
+  os,
+  database,
+  nodeVersion,
+  clientVersion,
+  engineVersion,
+  logs,
+}: IssueTemplateOptions): string {
+  return stripAnsi(`
+<!-- 
+Thanks for helping us improve Prisma! 🙏 Please follow the sections in the template and provide as much information as possible about your problem, e.g. by setting the \`DEBUG="*"\` environment variable and enabling additional logging output in Prisma Client.
 
-| Name            | Version            |
-|-----------------|--------------------|
-| Node            | ${process.version.padEnd(19)}| 
-| OS              | ${platform.padEnd(19)}|
-| Prisma Client   | ${version.padEnd(19)}|
+Learn more about writing proper bug reports here: https://pris.ly/d/bug-reports
+-->
 
-${moreInfo}
+## Bug description
 
-## Logs
+<!-- A clear and concise description of what the bug is. -->
+
+## How to reproduce
+
+<!--
+Steps to reproduce the behavior:
+1. Go to '...'
+2. Change '....'
+3. Run '....'
+4. See error
+-->
+
+## Expected behavior
+
+<!-- A clear and concise description of what you expected to happen. -->
+
+## Prisma information
+
+<!-- Your Prisma schema, Prisma Client queries, ...
+Do not include your database credentials when sharing your Prisma schema! -->
+
+## Environment & setup
+
+<!-- In which environment does the problem occur -->
+
+- OS: ${os}<!--[e.g. Mac OS, Windows, Debian, CentOS, ...]-->
+- Database: ${database}<!--[PostgreSQL, MySQL, MariaDB or SQLite]-->
+- Node.js version: ${nodeVersion}<!--[Run \`node -v\` to see your Node.js version]-->
+- Client version: ${clientVersion}
+- Engine version: ${engineVersion}
+<!--[Run \`prisma -v\` to see your Prisma version and paste it between the \´\´\´]-->
 \`\`\`
-${logs}
-\`\`\``,
-  )
 
-  const url = getGithubIssueUrl({ title, body })
-  return `${title}
+\`\`\`
+## Logs
+<details>
+  <summary>Click to expand!</summary>
+  
+  \`\`\`
+  ${logs}
+  \`\`\`
+</details>
+  `)
+}
+export async function getErrorMessageWithLink(
+  engine: NodeEngine,
+  options?: ErrorWithLinkInput,
+) {
+  const logs = normalizeLogs(stripAnsi(getLogs()))
+  const moreInfo = options?.description
+  ? `# Description\n\`\`\`\n${options.description}\n\`\`\``
+  : ''
+  const engineVersion = await engine.version()
+  const content = clientBugIssueTemplate({
+    database: engine.datasources.map((datasource) => datasource.name).join(', '),
+    logs: logs,
+    nodeVersion: process.version,
+    os: engine.platform,
+    clientVersion: engine.clientVersion,
+    engineVersion: engineVersion
+  })
+
+
+
+  const url = getGithubIssueUrl({ title: options?.title, body: content })
+  if (url.length >= 2048) {
+    console.log('F');
+  }
+  return `${options?.title}
 
 This is a non-recoverable error which probably happens when the Prisma Query Engine has a panic.
 
@@ -127,6 +190,7 @@ ${link(url)}
 If you want the Prisma team to look into it, please open the link above 🙏
 `
 }
+function saveError(content: string) {}
 
 /**
  * Removes the leading timestamps (from docker) and trailing ms (from debug)
